@@ -9,4 +9,5 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Added
 
+- Added `approval_workflow` package with `ApprovalEngine`, supporting amount-based routing, quorum-based sequential levels, delegation, escalation, and terminal states.
 - Initial project structure from the factory utility template.

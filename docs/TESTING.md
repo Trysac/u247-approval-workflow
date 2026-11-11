@@ -1,29 +1,17 @@
 # Testing
 
-## Running
+The provided snapshot includes a pytest 9.2.0 compiled artifact for `tests/test_acceptance.py`. Run the tests with:
 
-```sh
-uv run pytest --cov=approval_workflow   # tests with coverage report
-uv run python scripts/check.py      # every gate, as CI and the factory run it
+```bash
+pytest
 ```
-
-## Policy
-
-- Branch coverage of `src/approval_workflow` must stay at or above 80 %; the gate fails below it.
-- Tests exercise the public API (`import approval_workflow`) and assert every observable effect:
-  return values, raised exceptions and their messages.
-- Each bug fix starts with a failing test that reproduces it.
-- Tests are deterministic: no network, no wall clock, no dependence on test order.
-
-## Tiers
-
-- Local tier (every gate run, coverage measured here): unit and property tests, plus conformance on small
-  fixtures kept in the repository.
-- CI tier: conformance that needs an external tool or a download. Mark them `@pytest.mark.conformance`; `scripts/check.py` deselects them locally
-  (unless `FABRICA_CI=1`). The CI `conformance` job sets `FABRICA_CI=1` and runs the full suite. Tools are installed
-  by the optional `ci/conformance-setup.sh` (bash, CI only; verify every download against a pinned SHA-256), and
-  tagged tests skip cleanly when their tool is missing.
 
 ## Layout
 
-`tests/test_<module>.py` mirrors each public module. Shared fixtures go in `tests/conftest.py`.
+The only test module present in the provided snapshot is `tests/test_acceptance.py`. It contains acceptance tests derived from the specification. Its visible tests include `test_routing_amounts` and `test_quorum_and_progression`, and the module exercises the specification's acceptance scenarios: route selection at exact bounds, quorum progression, self-approval and eligibility, duplicate votes, rejection and terminal immutability, escalation and expiry via `tick`, delegation and delegation expiry, request/amount validation, and event payloads without comments.
+
+No other test modules are present in the provided snapshot.
+
+## Conventions
+
+The acceptance module defines a `make_clock` helper that returns an advanceable clock, so timeout, escalation and delegation-expiry behavior is deterministic. Tests exercise the public API rather than private helpers. The specification names these edge cases for tests: a quorum equal to the number of approvers, an amount exactly equal to a route bound, a delegate who is also a direct approver, and cancel after approval.
