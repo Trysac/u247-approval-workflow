@@ -1,24 +1,21 @@
+"""Multi-level approval engine.
+
+This package provides a deterministic, in-memory approval workflow engine.
+It supports amount-based routing, sequential levels with quorums,
+separation of duties, time-bound delegation, escalation on timeout and
+explicit terminal states.
 """
-Multi-level approval engine: amount-based routing, sequential levels with quorums, separation of
-duties, time-bound delegation, escalation on timeout and terminal states
-"""
 
-from __future__ import annotations
+from .engine import ApprovalEngine
+from .errors import ApprovalError
+from .models import ApprovalPolicy, HistoryEntry, Level, RequestState, Route
 
-__all__ = ["__version__", "normalize"]
-
-__version__ = "0.1.0"
-
-
-def normalize(value: str) -> str:
-    """Return ``value`` trimmed and lower-cased.
-
-    Placeholder API created by the template: replace it with the utility's real behavior.
-
-    Raises:
-        ValueError: if ``value`` is empty or only whitespace.
-    """
-    cleaned = value.strip()
-    if not cleaned:
-        raise ValueError("value must not be empty")
-    return cleaned.lower()
+__all__ = [
+    "ApprovalEngine",
+    "ApprovalError",
+    "ApprovalPolicy",
+    "HistoryEntry",
+    "Level",
+    "RequestState",
+    "Route",
+]
